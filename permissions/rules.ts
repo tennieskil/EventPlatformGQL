@@ -321,14 +321,14 @@ export const parentIsLocked = rule({ cache: 'no_cache' })(
     (parent: IPost, args: any) => parent.locked,
 );
 
-export const argEventHasOwner = rule({ cache: 'strict' })(
-    async (parent: undefined, { event }: { event: IEditEvent & INode }) => {
-        return Event.findById(event._id).then(
-            project((event) => Boolean(event.owner)),
-        );
-    },
-);
+// export const argEventHasOwner = rule({ cache: 'strict' })(
+//     async (parent: undefined, { event }: { event: IEditEvent & INode }) => {
+//         return Event.findById(event._id).then(
+//             project((event) => Boolean(event.owner)),
+//         );
+//     },
+// );
 
-export const argOwnerDefined = rule({ cache: 'no_cache' })(
-    (parent: undefined, { event }: { event: IEditEvent }) => Boolean(event.owner),
-);
+// export const argOwnerDefined = rule({ cache: 'no_cache' })(
+//     (parent: undefined, { event }: { event: IEditEvent }) => Boolean(event.owner),
+// );

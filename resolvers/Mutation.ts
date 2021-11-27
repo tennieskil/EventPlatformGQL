@@ -25,6 +25,10 @@ export interface IPostArg {
     post: string
 }
 
+export interface ILockedArg {
+    locked: boolean
+}
+
 export interface ICategoryArg {
     category: string
 }
@@ -344,25 +348,31 @@ export interface IEditInvitation {
 // }
 
 // TODO: Improve this resolver
-export function acceptInvitation(
+export async function acceptInvitation(
     parent: undefined,
     { invitation }: IInvitationArg,
 ) {
-    const inv = Invitation.findOne({ _id: Types.ObjectId(invitation)});
-    const event = Event.findOneAndUpdate(
-        { _id: Types.ObjectId(inv.to)},
-        { $addToSet: { attendants: Types.ObjectId(inv.invited) }},
+    const inv = await Invitation.findOne({ _id: Types.ObjectId(invitation)});
+    if (inv === null) {
+        return null;
+    }
+    const event = await Event.findOneAndUpdate(
+        { _id: inv.to},
+        { $addToSet: { attendants: inv.invited }},
     );
     Invitation.findOneAndDelete({ _id: Types.ObjectId(invitation) });
     return event;
 }
 
-export function declineInvitation(
+export async function declineInvitation(
     parent: undefined,
     { invitation }: IInvitationArg,
 ) {
-    const inv = Invitation.findOne({ _id: Types.ObjectId(invitation) });
-    const event = Event.findOne({ _id: Types.ObjectId(inv.to) });
+    const inv = await Invitation.findOne({ _id: Types.ObjectId(invitation) });
+    if (inv === null) {
+        return null;
+    }
+    const event = await Event.findOne({ _id: inv.to });
     Invitation.findOneAndDelete({ _id: Types.ObjectId(invitation) });
     return event;
 }
@@ -469,7 +479,7 @@ export function flagPost(parent: undefined, { post }: IPostArg) {
 }
 
 // TODO: Make this resolver obsolete
-export function review(parent: undefined, { post, locked }: { post: IPostArg, locked: boolean }) {
+export function review(parent: undefined, { post, locked }: IPostArg & ILockedArg) {
     return Post.findByIdAndUpdate(
         Types.ObjectId(post),
         { 

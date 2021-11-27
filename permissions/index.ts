@@ -144,7 +144,7 @@ export const permissions = shield(
             editEvent: and(
                 or(
                     rules.callerManagesArg,
-                    or(not(rules.argOwnerDefined), not(rules.argEventHasOwner)),
+                    rules.callerOwnsArg
                 ),
                 or(
                     not(rules.argIsPrivate),
