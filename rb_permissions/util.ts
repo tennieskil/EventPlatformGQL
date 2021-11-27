@@ -1,3 +1,4 @@
+import { isType } from 'graphql';
 import { isArray, isObject, mapValues, mergeWith } from 'lodash';
 
 /**

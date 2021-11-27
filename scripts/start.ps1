@@ -1,1 +1,1 @@
-docker start gql-mongo
+sudo docker start gql-mongo
