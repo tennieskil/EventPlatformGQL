@@ -25,10 +25,6 @@ export interface IPostArg {
     post: string
 }
 
-export interface ILockedArg {
-    locked: boolean
-}
-
 export interface ICategoryArg {
     category: string
 }
@@ -38,8 +34,8 @@ export interface IEditCategory {
 }
 
 // TODO: Improve this resolver
-export function createCategory(parent: undefined, { category }: { category: ICategoryArg }, ctx: IContext) {
-    return Category.create({ category });
+export function createCategory(parent: undefined, { name }: { name: string}, ctx: IContext) {
+    return Category.create({ name: name });
 }
 
 export function editCategory(
@@ -319,11 +315,13 @@ export function invite(parent: undefined, {user, event}: IUserArg & IEventArg, c
 // }
 
 // TODO: Make this interface obsolete
+/* 
 export interface IEditInvitation {
     from?: string
     invited?: string
     to?: string
-}
+} */
+
 // TODO: Make this resolver obsolete
 // export function editInvitation(
 //     parent: undefined,
@@ -353,15 +351,17 @@ export async function acceptInvitation(
     { invitation }: IInvitationArg,
 ) {
     const inv = await Invitation.findOne({ _id: Types.ObjectId(invitation)});
-    if (inv === null) {
-        return null;
-    }
+    if (inv) {
+        
     const event = await Event.findOneAndUpdate(
         { _id: inv.to},
         { $addToSet: { attendants: inv.invited }},
     );
     Invitation.findOneAndDelete({ _id: Types.ObjectId(invitation) });
     return event;
+    }else{
+        return {};
+    }
 }
 
 export async function declineInvitation(
@@ -436,13 +436,13 @@ export function createPost(parent: undefined, {post}: {post: ICreatePost}, conte
 }
 
 // TODO: Make this interface obsolete
-export interface IEditPost {
+/* export interface IEditPost {
     content: string
     locked: boolean
     author: string
     reviewer: string
     postedAt: string
-}
+} */
 // TODO: Make this resolver obsolete
 // export function editPost(parent: undefined, { post }: { post: IEditPost & INode }) {
 //     const _id = popId(post);
@@ -479,12 +479,12 @@ export function flagPost(parent: undefined, { post }: IPostArg) {
 }
 
 // TODO: Make this resolver obsolete
-export function review(parent: undefined, { post, locked }: IPostArg & ILockedArg) {
+export function review(parent: undefined, args: {post:IPostArg, locked:boolean}) {
     return Post.findByIdAndUpdate(
-        Types.ObjectId(post),
+        args.post,
         { 
-            flagged: locked,
-            locked: locked
+            flagged: args.locked,
+            locked: args.locked
         },
     );
 }

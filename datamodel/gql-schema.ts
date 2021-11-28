@@ -58,14 +58,6 @@ const typeDefs = gql`
         to: Event!
     }
 
-    # TODO: Make this input type obsolete
-    input EditInvitation {
-        _id: ID!
-        from: ID
-        invited: ID
-        to: ID
-    }
-
     scalar Date
     type Event {
         _id: ID!
@@ -102,8 +94,6 @@ const typeDefs = gql`
         time: Date
         description: String
         location: String
-        # TODO: Remove this argument
-        owner: ID
         private: Boolean
     }
 
@@ -120,16 +110,6 @@ const typeDefs = gql`
     input CreatePost {
         postedAt: ID!
         content: String!
-    }
-
-    # TODO: Make this type obsolete
-    input EditPost {
-        _id: ID!
-        content: String
-        locked: Boolean
-        author: ID
-        reviewer: ID
-        postedAt: ID
     }
 
     type Query {
@@ -169,8 +149,8 @@ const typeDefs = gql`
 
         # Invitations
         invite(user: ID!, event: ID!): Invitation
-        acceptInvitation(invitation: ID!): Invitation
-        declineInvitation(invitation: ID!): Invitation
+        acceptInvitation(invitation: ID!): Event
+        declineInvitation(invitation: ID!): Event
 
         # Requests
         request(event: ID!): Event

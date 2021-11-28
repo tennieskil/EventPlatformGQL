@@ -41,7 +41,8 @@ function mergePerms(
  * @returns Rule map where each leafs is a disjunction
  */
 export function OR(...perms: IRules[]): IRules {
-    return mergePerms(perms, (leafPerms: ShieldRule[]) => {const rule: RuleOr = new RuleOr(leafPerms); return rule});
+    return {};
+    //return mergePerms(perms, (leafPerms: ShieldRule[]) => {const rule: RuleOr = new RuleOr(leafPerms); return rule});
 }
 
 /**
@@ -62,7 +63,8 @@ type RBAC = { [k in Role]?: IRules };
  * permissions
  */
 export function rbac(perms: RBAC, defaults?: IRules): IRules {
-    var arrAdmin: IRules[] = [];
+    return {};
+    /* var arrAdmin: IRules[] = [];
     var arr: IRules[] = [];
     if(perms.ADMINISTRATOR){
         arrAdmin.push(perms.ADMINISTRATOR);
@@ -94,5 +96,9 @@ export function rbac(perms: RBAC, defaults?: IRules): IRules {
     if(defaults){
         arr.push(defaults);
     }
-    return mergePerms(arr,(leafPerms: ShieldRule[]) => {const rule: RuleOr = new RuleOr(leafPerms); return rule})
+    if(arr){
+        return mergePerms(arr,(leafPerms: ShieldRule[]) => {const rule: RuleOr = new RuleOr(leafPerms); return rule})
+    }else{
+        return {};
+    } */
 }
