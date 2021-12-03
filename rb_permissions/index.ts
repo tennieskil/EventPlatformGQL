@@ -117,10 +117,10 @@ const FREE = {
         deleteEvent: rules.callerOwnsParent,
 
         // Event management
-        addAttendant: or(
-            and(rules.callerManagesArg, rules.argRequestsArg),
-            and(isCaller(Reference.ARG), rules.callerIsInvitedToArg),
-        ),
+        // addAttendant: or(
+        //     and(rules.callerManagesArg, rules.argRequestsArg),
+        //     and(isCaller(Reference.ARG), rules.callerIsInvitedToArg),
+        // ),
         kick: and(
             not(and(rules.callerOwnsArg, isCaller(Reference.ARG))),
             or(isCaller(Reference.ARG), rules.callerManagesArg),
@@ -160,6 +160,7 @@ const FREE = {
         ),
 
         // Posts
+        // createPost: rules.isLoggedIn,
         createPost: and(
             rules.isLoggedIn,
             rules.callerAttendsArg
@@ -226,12 +227,21 @@ const ADMINISTRATOR = {
     Category: {
         subscribers: allow
     },
+    Post: { //COMMENT we should aslo check if we should give access to other objects
+        _id: allow,
+        content: allow,
+        author: allow,
+        postedAt: allow,
+        flagged: allow,
+        locked: allow,
+    },
     Mutation: {
+        createUser: allow, //COMMENT admin has to be able to create user according to test
         createCategory: allow,
         editCategory: allow,
         deleteCategory: allow,
         assignModerator: allow,
-        removeModeratore: allow,
+        removeModerator: allow,
         setRole: allow,
         deleteUser: allow,
         removeCategories: allow,

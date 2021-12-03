@@ -62,42 +62,19 @@ type RBAC = { [k in Role]?: IRules };
  * permissions
  */
 export function rbac(perms: RBAC, defaults?: IRules): IRules {
-    return {};
-    /* var arrAdmin: IRules[] = [];
+    // return {};
+    var arrAdmin: IRules[] = [];
     var arr: IRules[] = [];
-    if(perms.ADMINISTRATOR){
-        arrAdmin.push(perms.ADMINISTRATOR);
-        arrAdmin.push(callerHasRole(Role.ADMINISTRATOR));
-        const ruleAdmin: IRules = mergePerms(arrAdmin,(leafPerms: ShieldRule[]) => {const rule: RuleAnd = new RuleAnd(leafPerms); return rule});
-        arr.push(ruleAdmin);
+    if (perms.ADMINISTRATOR && callerHasRole(Role.ADMINISTRATOR)) {
+        return perms.ADMINISTRATOR;
+    } else if (perms.FREE && callerHasRole(Role.FREE)) {
+        return perms.FREE;
+    } else if (perms.PREMIUM && callerHasRole(Role.PREMIUM)) {
+        return perms.PREMIUM;
+    } else if (perms.MODERATOR && callerHasRole(Role.MODERATOR)) {
+        return perms.MODERATOR;
+    } else if (defaults) {
+        return defaults;
     }
-    var arrFree: IRules[] = [];
-    if(perms.FREE){
-        arrFree.push(perms.FREE);
-        arrFree.push(callerHasRole(Role.FREE));
-        const ruleFree: IRules = mergePerms(arrFree,(leafPerms: ShieldRule[]) => {const rule: RuleAnd = new RuleAnd(leafPerms); return rule});
-        arr.push(ruleFree);
-    }
-    var arrPremium: IRules[] = [];
-    if(perms.PREMIUM){
-        arrPremium.push(perms.PREMIUM);
-        arrPremium.push(callerHasRole(Role.PREMIUM));
-        const rulePremium: IRules = mergePerms(arrPremium,(leafPerms: ShieldRule[]) => {const rule: RuleAnd = new RuleAnd(leafPerms); return rule});
-        arr.push(rulePremium);
-    }
-    var arrModerator: IRules[] = [];
-    if(perms.MODERATOR){
-        arrModerator.push(perms.MODERATOR);
-        arrModerator.push(callerHasRole(Role.MODERATOR));
-        const ruleModerator: IRules = mergePerms(arrModerator,(leafPerms: ShieldRule[]) => {const rule: RuleAnd = new RuleAnd(leafPerms); return rule});
-        arr.push(ruleModerator);
-    }
-    if(defaults){
-        arr.push(defaults);
-    }
-    if(arr){
-        return mergePerms(arr,(leafPerms: ShieldRule[]) => {const rule: RuleOr = new RuleOr(leafPerms); return rule})
-    }else{
-        return {};
-    } */
+    return {};
 }
