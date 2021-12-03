@@ -301,8 +301,8 @@ export function demote(
 //     );
 // }
 
-export function invite(parent: undefined, {user, event}: IUserArg & IEventArg, context: IContext) {
-    const invitation = Invitation.findOneAndUpdate(
+export async function invite(parent: undefined, {user, event}: IUserArg & IEventArg, context: IContext) {
+    const invitation = await Invitation.findOneAndUpdate(
         { to: event, invited: user},
         { from: getLoggedIn(context),
     });
