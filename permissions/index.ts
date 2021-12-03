@@ -162,10 +162,6 @@ export const permissions = shield(
             deleteEvent: rules.callerOwnsParent,
 
             // Event management
-            addAttendant: or(
-                and(rules.callerManagesArg, rules.argRequestsArg),
-                and(isCaller(Reference.ARG), rules.callerIsInvitedToArg),
-            ),
             kick: and(
                 not(and(rules.callerOwnsArg, isCaller(Reference.ARG))),
                 or(isCaller(Reference.ARG), rules.callerManagesArg),

@@ -19,8 +19,8 @@ export function requests(parent: IUser) {
 export function attends(parent: IUser) {
     const _id = [parent._id];
     return Event.find({ $or: [
-        { attendants: _id },
-        { managers: _id },
+        { attendants: parent._id },
+        { managers: parent._id },
         { owner: parent._id },
     ] });
 }

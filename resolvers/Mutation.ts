@@ -84,7 +84,12 @@ export interface ICreateUser {
 const SALT_ROUNDS = 8;
 // TODO: Improve this resolver
 export function createUser(parent: undefined, {user}: {user: ICreateUser}, context: IContext) {
-    return User.create({user});
+    return User.create({
+        username : user.username,
+        name : user.name,
+        surname: user.surname,
+        password: user.password,
+    });
 }
 
 export function login(
@@ -431,7 +436,8 @@ export function createPost(parent: undefined, {post}: {post: ICreatePost}, conte
         author: getLoggedIn(context),
         flagged: false,
         locked: false,
-        ...post
+        postedAt: post.postedAt,
+        content: post.content,
     });
 }
 
@@ -483,8 +489,8 @@ export function review(parent: undefined, args: {post:IPostArg, locked:boolean})
     return Post.findByIdAndUpdate(
         args.post,
         { 
-            flagged: args.locked,
-            locked: args.locked
+            flagged: false,
+            locked: args.locked,
         },
     );
 }
