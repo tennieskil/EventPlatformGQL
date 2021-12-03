@@ -41,8 +41,7 @@ function mergePerms(
  * @returns Rule map where each leafs is a disjunction
  */
 export function OR(...perms: IRules[]): IRules {
-    return {};
-    //return mergePerms(perms, (leafPerms: ShieldRule[]) => {const rule: RuleOr = new RuleOr(leafPerms); return rule});
+    return mergePerms(perms, (leafPerms: ShieldRule[]) => {const rule: RuleOr = new RuleOr(leafPerms); return rule});
 }
 
 /**
