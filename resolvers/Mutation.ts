@@ -187,7 +187,7 @@ export interface ICreateEvent {
 export async function createEvent(parent: undefined, {event}: {event: ICreateEvent}, context: IContext) {
     return Event.create({
         owner: getLoggedIn(context),
-        managedBy: [getLoggedIn(context)],
+        managers: [getLoggedIn(context)],
         attendants: [getLoggedIn(context)],
         ...event
     });

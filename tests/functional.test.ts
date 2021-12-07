@@ -21,7 +21,6 @@ describe('functional correctness', () => {
         database = await dbSetup();
         await loginAs(Role.ADMINISTRATOR);
     });
-
     describe('creation', () => {
         it('can create categories', async () => {
             const category = 'newCategory';
